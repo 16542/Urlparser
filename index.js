@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -6,19 +5,20 @@ const dns = require("dns");
 const urlParser = require("url");
 // import body parser ;
 const BodyParser = require("body-parser");
+require("dotenv").config({path:'./config.env'});
 
 app.use(BodyParser.urlencoded({ extended: false }));
 
 // import mongoose
 const mongoose = require("mongoose");
-const req = require("express/lib/request");
 
 // connecting the project to Db;
-
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const connectDatabase = () => {
+  mongoose.connect(process.env.MONGO_URI,  { useNewUrlParser: true }).then(connection => {
+      console.log(`MongoDB connected with host : ${connection.connection.host} `)
+  })
+}
+connectDatabase()
 // build URL Schema;
 
 const { Schema } = mongoose;
